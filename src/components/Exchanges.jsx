@@ -6,7 +6,7 @@ import { Collapse, Row, Col, Typography, Avatar } from 'antd';
 // import HTMLReactParser from 'html-react-parser';
 
 // import { useGetExchangesQuery } from '../services/cryptoApi';
-// import Loader from './Loader';
+import Loader from './Loader';
 
 const { Text } = Typography;
 const { Panel } = Collapse;
@@ -45,6 +45,8 @@ export default function Exchanges() {
       setExchanges(exchanges);
     });
   }, []);
+
+  if (!exchanges.length) return <Loader />;
 
   const renderExchanges = () => exchanges.map((exchange) => (
     <Panel header={exchange.name} key={exchange.id}>
