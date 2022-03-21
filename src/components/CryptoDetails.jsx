@@ -18,7 +18,7 @@ const CryptoDetails = () => {
   const { data, isFetching } = useGetCryptoDetailsQuery(coinId);
   const { data: coinHistory } = useGetCryptoHistoryQuery({ coinId, timeperiod });
   const cryptoDetails = data?.data?.coin;
-
+  // eslint-disable-next-line no-unused-vars
   if (isFetching) return <Loader />;
 
   const time = ['3h', '24h', '7d', '30d', '1y', '3m', '3y', '5y'];
@@ -39,7 +39,7 @@ const CryptoDetails = () => {
     { title: 'Total Supply', value: `$ ${cryptoDetails?.supply?.total && millify(cryptoDetails?.supply?.total)}`, icon: <ExclamationCircleOutlined /> },
     { title: 'Circulating Supply', value: `$ ${cryptoDetails?.supply?.circulating && millify(cryptoDetails?.supply?.circulating)}`, icon: <ExclamationCircleOutlined /> },
   ];
-console.log(timeperiod, data, coinHistory);
+// console.log(timeperiod, data, coinHistory);
   return (
     <Col className="coin-detail-container">
       <Col className="coin-heading-container">
@@ -102,5 +102,4 @@ console.log(timeperiod, data, coinHistory);
     </Col>
   );
 };
-
 export default CryptoDetails;
