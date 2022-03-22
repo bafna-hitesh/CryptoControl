@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Switch, Route, Link } from 'react-router-dom';
 import { Layout, Typography, Space } from 'antd';
-
+import { doc, onSnapshot } from 'firebase/firestore';
 import { Exchanges, Homepage, News, Cryptocurrencies, CryptoDetails, Navbar } from './components';
 import Alert from './components/Alert';
 import './App.css';
-import { auth } from './firebase';
+import { auth, db } from './firebase';
 
 function App() {
   const [alert, setAlert] = useState({
@@ -14,15 +14,24 @@ function App() {
     type: 'success',
   });
   const [user, setUser] = useState(null);
+  const [watchlist, setWatchlist] = useState([]);
+    // eslint-disable-next-line consistent-return
+  useEffect(() => {
+    if (user) {
+      const coinRef = doc(db, 'watchlist', user?.uid);
+      const unsubscribe = onSnapshot(coinRef, (coin) => {
+        if (coin.exists()) setWatchlist(coin.data().coins);
+      });
+      return () => {
+        unsubscribe();
+      };
+    }
+  }, [user]);
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((authUser) => {
-      if (authUser) {
-        // user has logged in...
-        setUser(authUser);
-      } else {
-        // user has logged out...
-        setUser(null);
-      }
+      if (authUser) setUser(authUser);
+      else setUser(null);
     });
     return () => {
       // perform cleanup actions
@@ -50,7 +59,7 @@ function App() {
                 <Cryptocurrencies />
               </Route>
               <Route exact path="/crypto/:coinId">
-                <CryptoDetails />
+                <CryptoDetails user={user} setAlert={setAlert} watchlist={watchlist} setWatchList={setWatchlist} />
               </Route>
               <Route exact path="/news">
                 <News />

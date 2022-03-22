@@ -3,22 +3,26 @@ import HTMLReactParser from 'html-react-parser';
 import { useParams } from 'react-router-dom';
 import millify from 'millify';
 import { Col, Row, Typography, Select } from 'antd';
-import { MoneyCollectOutlined, DollarCircleOutlined, FundOutlined, ExclamationCircleOutlined, StopOutlined, TrophyOutlined, CheckOutlined, NumberOutlined, ThunderboltOutlined } from '@ant-design/icons';
+import { MoneyCollectOutlined, DollarCircleOutlined, FundOutlined, ExclamationCircleOutlined, StopOutlined, TrophyOutlined, CheckOutlined, NumberOutlined, ThunderboltOutlined, HeartOutlined, HeartFilled } from '@ant-design/icons';
+import { Button } from '@material-ui/core';
 
+import { doc, setDoc } from 'firebase/firestore';
 import { useGetCryptoDetailsQuery, useGetCryptoHistoryQuery } from '../services/cryptoApi';
 import Loader from './Loader';
 import LineChart from './LineChart';
+import { db } from '../firebase';
 
 const { Title, Text } = Typography;
 const { Option } = Select;
 
-const CryptoDetails = () => {
+const CryptoDetails = ({ user, setAlert, watchlist }) => {
   const { coinId } = useParams();
   const [timeperiod, setTimeperiod] = useState('7d');
   const { data, isFetching } = useGetCryptoDetailsQuery(coinId);
   const { data: coinHistory } = useGetCryptoHistoryQuery({ coinId, timeperiod });
+  // const [isFavorite, setIsFavorite] = useState(false);
+
   const cryptoDetails = data?.data?.coin;
-  // eslint-disable-next-line no-unused-vars
   if (isFetching) return <Loader />;
 
   const time = ['3h', '24h', '7d', '30d', '1y', '3m', '3y', '5y'];
@@ -39,7 +43,58 @@ const CryptoDetails = () => {
     { title: 'Total Supply', value: `$ ${cryptoDetails?.supply?.total && millify(cryptoDetails?.supply?.total)}`, icon: <ExclamationCircleOutlined /> },
     { title: 'Circulating Supply', value: `$ ${cryptoDetails?.supply?.circulating && millify(cryptoDetails?.supply?.circulating)}`, icon: <ExclamationCircleOutlined /> },
   ];
-// console.log(timeperiod, data, coinHistory);
+
+  const inWatchlist = watchlist.includes(cryptoDetails?.uuid);
+
+  const addToWatchlist = async () => {
+    const coinRef = doc(db, 'watchlist', user.uid);
+    try {
+      await setDoc(
+        coinRef,
+        { coins: watchlist ? [...watchlist, cryptoDetails?.uuid] : [cryptoDetails?.uuid] },
+        { merge: true },
+      );
+
+      setAlert({
+        open: true,
+        message: `${cryptoDetails?.name} Added to the Watchlist !`,
+        type: 'success',
+      });
+    } catch (error) {
+      setAlert({
+        open: true,
+        message: error.message,
+        type: 'error',
+      });
+    }
+  };
+
+  const removeFromWatchlist = async () => {
+    const coinRef = doc(db, 'watchlist', user.uid);
+    try {
+      await setDoc(
+        coinRef,
+        { coins: watchlist.filter((wish) => wish !== coinId) },
+        { merge: true },
+      );
+
+      setAlert({
+        open: true,
+        message: `${cryptoDetails?.name} Removed from the Watchlist !`,
+        type: 'success',
+      });
+    } catch (error) {
+      setAlert({
+        open: true,
+        message: error.message,
+        type: 'error',
+      });
+    }
+  };
+  const favStyle = {
+    fontSize: '16px',
+     color: '#08c',
+  };
   return (
     <Col className="coin-detail-container">
       <Col className="coin-heading-container">
@@ -51,6 +106,12 @@ const CryptoDetails = () => {
       <Select defaultValue="7d" className="select-timeperiod" placeholder="Select Timeperiod" onChange={(value) => setTimeperiod(value)}>
         {time.map((date) => <Option key={date}>{date}</Option>)}
       </Select>
+      {user && (
+      <Button onClick={inWatchlist ? removeFromWatchlist : addToWatchlist}>
+        {inWatchlist ? <HeartFilled style={favStyle} /> : <HeartOutlined style={favStyle} />}
+      </Button>
+          )}
+
       <LineChart coinHistory={coinHistory} currentPrice={millify(cryptoDetails?.price)} coinName={cryptoDetails?.name} />
       <Col className="stats-container">
         <Col className="coin-value-statistics">
