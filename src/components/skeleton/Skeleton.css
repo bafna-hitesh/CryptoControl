@@ -1,0 +1,119 @@
+.postSk {
+    opacity: 0.7;
+    animation: skeleton-loading 1s infinite alternate;
+}
+@keyframes skeleton-loading {
+    0% {
+        background-color: hsl(200, 20%, 70%);
+    }
+    100% {
+        background-color: hsl(200, 20%, 95%);
+    }
+}
+.postSk-header {
+    width: 30%;
+    height: .8rem;
+    margin-bottom: 2rem;
+    border-radius: .125rem;
+}
+.postSk-info {
+    max-width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-top: 1rem;
+}
+.postSk-info-body {
+    width: 100%;
+    margin-bottom: 1rem;
+    border-radius: .125rem;
+}
+.postSk-info-header {
+    width: 50%;
+    height: .5rem;
+    margin-bottom: 1rem;
+}
+
+.postSk-info-content{
+    width: 30%;
+    height: .5rem;
+    margin-bottom: 3rem;
+}
+
+/* middle section */
+
+.middle-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+.middleSk-header {
+    width: 40%;
+    height: .8rem;
+    margin-bottom: 2rem;
+    border-radius: .125rem;
+}
+.middleSk-header-content {
+    width: 10%;
+    height: .5rem;
+    border-radius: .125rem;
+    margin-bottom: 1rem;
+}
+
+.middle-content {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding-right: 2rem;    
+}
+.middleSk-card {
+    width: 250px;
+    height: 200px;
+    margin-bottom: 2rem;
+    padding-left: 5px;
+    border-radius: .125rem;
+}
+.middleSk-card-header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: 5rem;
+    margin-bottom: 0.2rem;
+    align-items: center;
+}
+.header-name {
+    width: 50%;
+    height: .5rem;
+}
+.avatar {
+    width: 50px;
+    height: 50px;
+    margin: 10px 10px;
+    border-radius: 50%;
+}
+.breakline {
+    width: 100%;
+    height: 0.1rem;
+    margin-bottom: 1rem;
+}
+.middleSk-card-contain {
+    display: flex;
+    flex-direction: column;
+}
+.contain {
+    width: 50%;
+    height: .5rem;
+    margin-bottom: .5rem;
+    border-radius: .125rem;
+}
+.searchSkl {
+    width: 40%;
+    height: .5rem;
+    margin-left: 30%;
+    margin-bottom: 2rem;
+}
+.exchangeSkl {
+    width: 100%;
+    height: 1rem;
+    margin-bottom: 1.5rem;
+}

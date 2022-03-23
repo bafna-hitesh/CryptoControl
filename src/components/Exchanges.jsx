@@ -1,12 +1,8 @@
 /* eslint-disable no-trailing-spaces */
 /* eslint-disable react/jsx-indent */
 import { React, useEffect, useState } from 'react';
-// import millify from 'millify';
 import { Collapse, Row, Col, Typography, Avatar } from 'antd';
-// import HTMLReactParser from 'html-react-parser';
-
-// import { useGetExchangesQuery } from '../services/cryptoApi';
-import Loader from './Loader';
+import Skeleton from './skeleton/Skeleton';
 
 const { Text } = Typography;
 const { Panel } = Collapse;
@@ -46,7 +42,7 @@ export default function Exchanges() {
     });
   }, []);
 
-  if (!exchanges.length) return <Loader />;
+  if (!exchanges.length) return <Skeleton type="exchanges" />;
 
   const renderExchanges = () => exchanges.map((exchange) => (
     <Panel header={exchange.name} key={exchange.id}>

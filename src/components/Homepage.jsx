@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { useGetCryptosQuery } from '../services/cryptoApi';
 import Cryptocurrencies from './Cryptocurrencies';
 import News from './News';
-import Loader from './Loader';
+import Skeleton from './skeleton/Skeleton';
 
 const { Title } = Typography;
 
@@ -15,7 +15,7 @@ const Homepage = () => {
   // console.log('globalStats', data);
   const globalStats = data?.data?.stats;
 
-  if (isFetching) return <Loader />;
+  if (isFetching) return <Skeleton type="homepageScrren" />;
 
   return (
     <>
