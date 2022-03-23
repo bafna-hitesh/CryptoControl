@@ -93,7 +93,7 @@ const CryptoDetails = ({ user, setAlert, watchlist }) => {
   };
   const favStyle = {
     fontSize: '16px',
-     color: '#08c',
+    color: '#ff0000',
   };
   return (
     <Col className="coin-detail-container">
