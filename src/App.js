@@ -68,9 +68,9 @@ function App() {
           </div>
         </Layout>
         <div className="footer">
-          <Typography.Title level={5} style={{ color: 'white', textAlign: 'center' }}>Copyright © 2021
-            <Link to="/">
-              Cryptoverse Inc.
+          <Typography.Title level={5} style={{ color: 'white', textAlign: 'center' }}>Copyright © 2022
+            <Link to="/" style={{ marginLeft: '5px' }}>
+              CryptControl Inc.
             </Link> <br />
             All Rights Reserved.
           </Typography.Title>

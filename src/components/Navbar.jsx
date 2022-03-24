@@ -6,6 +6,20 @@ import icon from '../images/cryptocurrency.png';
 import AuthModal from './Authentication/AuthModal';
 import UserSidebar from './Authentication/UserSidebar';
 
+import Particles from '../Particles';
+
+const styles = {
+  root: {
+    position: 'relative',
+    fontFamily: 'sans-serif',
+    textAlign: 'center',
+    height: '100%',
+    background: '#222',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+};
 const Navbar = ({ alert, setAlert, user, watchlist }) => {
   const [activeMenu, setActiveMenu] = useState(true);
   const [screenSize, setScreenSize] = useState(undefined);
@@ -30,6 +44,7 @@ const Navbar = ({ alert, setAlert, user, watchlist }) => {
 
   return (
     <div className="nav-container">
+      <Particles style={styles.root} />
       <div className="logo-container">
         <Avatar src={icon} size="large" />
         <Typography.Title level={2} className="logo"><Link to="/">CryptoControl</Link></Typography.Title>
