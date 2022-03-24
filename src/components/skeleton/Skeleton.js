@@ -58,21 +58,7 @@ function Skeleton({ type }) {
         <div className="postSk middleSk-header-content" />
       </div>
       <div className="middle-content">
-        <div className="middleSk-card">
-          <div className="middleSk-card-header">
-            <span className="postSk header-name" />
-            <span className="postSk avatar" />
-          </div>
-          <div className="postSk breakline" />
-          <div className="middleSk-card-contain">
-            <div className="postSk contain" />
-            <div className="postSk contain" />
-            <div className="postSk contain" />
-          </div>
-        </div>
-        <div className="middle-content">
-          {[1, 2, 3, 4, 5, 6, 7, 8].map((n) => <CardSkeleton key={n} />)}
-        </div>
+        {[1, 2, 3, 4, 5, 6, 7, 8].map((n) => <CardSkeleton key={n} />)}
       </div>
     </main>
 
