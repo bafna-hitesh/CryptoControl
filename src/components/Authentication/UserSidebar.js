@@ -1,15 +1,17 @@
 /* eslint-disable no-unused-vars */
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 // import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import Button from '@material-ui/core/Button';
 import { Avatar } from 'antd';
-import { UserOutlined } from '@ant-design/icons';
+import { UserOutlined, DeleteOutlined } from '@ant-design/icons';
 import { signOut } from 'firebase/auth';
-import { auth } from '../../firebase';
-// import InboxIcon from '@material-ui/icons/MoveToInbox';
-// import MailIcon from '@material-ui/icons/Mail';
+import millify from 'millify';
+import { doc, setDoc } from 'firebase/firestore';
+import { auth, db } from '../../firebase';
+import { useGetCryptoDetailsQuery } from '../../services/cryptoApi';
+import './scrollbar.css';
 
 const useStyles = makeStyles({
     container: {
@@ -68,19 +70,64 @@ const useStyles = makeStyles({
       },
 });
 
-export default function UserSidebar({ user, setAlert }) {
-    const classes = useStyles();
+export default function UserSidebar({ user, setAlert, watchlist }) {
+  const classes = useStyles();
+
+  const removeFromWatchlist = async (coinId, cryptoname) => {
+    const coinRef = doc(db, 'watchlist', user.uid);
+    try {
+      await setDoc(
+        coinRef,
+        { coins: watchlist.filter((wish) => wish !== coinId) },
+        { merge: true },
+      );
+
+      setAlert({
+        open: true,
+        message: `${cryptoname} Removed from the Watchlist !`,
+        type: 'success',
+      });
+    } catch (error) {
+      setAlert({
+        open: true,
+        message: error.message,
+        type: 'error',
+      });
+    }
+  };
+
+  function DisplayWatchlist() {
+    return watchlist.map((coinId) => {
+      const data = useGetCryptoDetailsQuery(coinId);
+      const cryptoDetails = data?.data?.data?.coin;
+      return (
+        <div className={classes.coin}>
+          <span>{cryptoDetails?.name}</span>
+          <span>
+            ${cryptoDetails?.price && millify(cryptoDetails?.price)}
+            <DeleteOutlined
+              style={{ cursor: 'pointer', marginLeft: 10 }}
+              fontSize="16"
+              onClick={() => removeFromWatchlist(coinId, cryptoDetails?.name)}
+            />
+          </span>
+
+        </div>
+
+      );
+    });
+  }
+
     const [state, setState] = React.useState({
         right: false,
     });
-
     const toggleDrawer = (anchor, open) => (event) => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
     }
 
     setState({ ...state, [anchor]: open });
-  };
+};
 
   const logOut = () => {
     signOut(auth);
@@ -133,15 +180,15 @@ export default function UserSidebar({ user, setAlert }) {
                     fontSize: '1.2rem',
                     textAlign: 'center',
                     fontWeight: 'bolder',
-                    // backgroundColor: '#EEBC1D',
                   }}
                 >
                   {user.displayName || user.email}
                 </span>
-                <div className={classes.watchlist}>
+                <div className={`${classes.watchlist} custom-skroll`}>
                   <span style={{ fontSize: 15, fontFamily: 'sans-serif', letterSpacing: '2px' }}>
                     Watchlist
                   </span>
+                  <DisplayWatchlist />
                 </div>
               </div>
               <Button

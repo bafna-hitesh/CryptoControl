@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import HTMLReactParser from 'html-react-parser';
 import { useParams } from 'react-router-dom';
@@ -5,6 +6,7 @@ import millify from 'millify';
 import { Col, Row, Typography, Select } from 'antd';
 import { MoneyCollectOutlined, DollarCircleOutlined, FundOutlined, ExclamationCircleOutlined, StopOutlined, TrophyOutlined, CheckOutlined, NumberOutlined, ThunderboltOutlined, HeartOutlined, HeartFilled } from '@ant-design/icons';
 import { Button } from '@material-ui/core';
+import Heart from 'react-animated-heart';
 
 import { doc, setDoc } from 'firebase/firestore';
 import { useGetCryptoDetailsQuery, useGetCryptoHistoryQuery } from '../services/cryptoApi';
@@ -20,7 +22,7 @@ const CryptoDetails = ({ user, setAlert, watchlist }) => {
   const [timeperiod, setTimeperiod] = useState('7d');
   const { data, isFetching } = useGetCryptoDetailsQuery(coinId);
   const { data: coinHistory } = useGetCryptoHistoryQuery({ coinId, timeperiod });
-  // const [isFavorite, setIsFavorite] = useState(false);
+  const [isClick, setClick] = useState(false);
 
   const cryptoDetails = data?.data?.coin;
   if (isFetching) return <Loader />;
@@ -91,10 +93,6 @@ const CryptoDetails = ({ user, setAlert, watchlist }) => {
       });
     }
   };
-  const favStyle = {
-    fontSize: '16px',
-    color: '#ff0000',
-  };
   return (
     <Col className="coin-detail-container">
       <Col className="coin-heading-container">
@@ -107,10 +105,10 @@ const CryptoDetails = ({ user, setAlert, watchlist }) => {
         {time.map((date) => <Option key={date}>{date}</Option>)}
       </Select>
       {user && (
-      <Button onClick={inWatchlist ? removeFromWatchlist : addToWatchlist}>
-        {inWatchlist ? <HeartFilled style={favStyle} /> : <HeartOutlined style={favStyle} />}
+      <Button className="noHover" onClick={inWatchlist ? removeFromWatchlist : addToWatchlist}>
+        <Heart className="noHover" isClick={isClick} onClick={() => setClick(!isClick)} />
       </Button>
-          )}
+      )}
 
       <LineChart coinHistory={coinHistory} currentPrice={millify(cryptoDetails?.price)} coinName={cryptoDetails?.name} />
       <Col className="stats-container">

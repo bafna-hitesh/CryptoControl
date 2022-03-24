@@ -6,7 +6,7 @@ import icon from '../images/cryptocurrency.png';
 import AuthModal from './Authentication/AuthModal';
 import UserSidebar from './Authentication/UserSidebar';
 
-const Navbar = ({ alert, setAlert, user }) => {
+const Navbar = ({ alert, setAlert, user, watchlist }) => {
   const [activeMenu, setActiveMenu] = useState(true);
   const [screenSize, setScreenSize] = useState(undefined);
 
@@ -32,7 +32,7 @@ const Navbar = ({ alert, setAlert, user }) => {
     <div className="nav-container">
       <div className="logo-container">
         <Avatar src={icon} size="large" />
-        <Typography.Title level={2} className="logo"><Link to="/">Cryptoverse</Link></Typography.Title>
+        <Typography.Title level={2} className="logo"><Link to="/">CryptoControl</Link></Typography.Title>
         <Button className="menu-control-container" onClick={() => setActiveMenu(!activeMenu)}><MenuOutlined /></Button>
       </div>
       {activeMenu && (
@@ -50,7 +50,7 @@ const Navbar = ({ alert, setAlert, user }) => {
           <Link to="/news">News</Link>
         </Menu.Item>
         <div>
-          {user ? <UserSidebar user={user} setAlert={setAlert} /> : <AuthModal alert={alert} setAlert={setAlert} />}
+          {user ? <UserSidebar user={user} setAlert={setAlert} watchlist={watchlist} /> : <AuthModal alert={alert} setAlert={setAlert} />}
         </div>
       </Menu>
       )}

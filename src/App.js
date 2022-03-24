@@ -43,7 +43,7 @@ function App() {
     <div className="app">
       <Alert alert={alert} setAlert={setAlert} />
       <div className="navbar">
-        <Navbar alert={alert} setAlert={setAlert} user={user} />
+        <Navbar alert={alert} setAlert={setAlert} user={user} watchlist={watchlist} />
       </div>
       <div className="main">
         <Layout>
