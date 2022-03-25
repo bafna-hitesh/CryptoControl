@@ -118,7 +118,6 @@ a:hover{
         height: 8vh;
         position:fixed;
         width: 100%;
-        z-index: 100;
         background-color: var(--bgSecondary);
     }
   
@@ -389,3 +388,46 @@ width: 70%;
     color: unset !important;
 }
 /* /html/body/section[3]/canvas */
+
+:root {
+    --primary: #23adad;
+    --greyLight: #23adade1;
+    --greyLight-2: #cbe0dd;
+    --greyDark: #2d4848;
+  }
+  
+.pagination {
+    margin: 1rem 0;
+    display: flex;
+    justify-content: center;
+}
+.page {
+    width: 60%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0.6rem;
+    box-shadow: 0 0.8rem 2rem rgba(#5a6181, 0.05);
+    list-style-type: none;
+}
+
+.page__numbers_btn, .page__btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0.8rem;
+    font-size: 1.4rem!important;
+    cursor: pointer;
+}
+.page__numbers__btn {
+    background: var(--primary)!important;
+    color: #fff!important; 
+    border-radius: 4px!important;
+    font-size: 1rem !important;
+    margin: 0 5px;
+}
+
+.page__btn {
+    color: var(--primary);
+    /* font-weight: bold; */
+}
