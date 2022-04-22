@@ -86,4 +86,4 @@ const LineChart = ({ coinHistory, currentPrice, coinName }) => {
   );
 };
 
-export default LineChart;
+export default React.memo(LineChart);
