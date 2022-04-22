@@ -43,7 +43,7 @@ const Navbar = ({ alert, setAlert, user, watchlist }) => {
   }, [screenSize]);
 
   return (
-    <div className="nav-container">
+    <div className={`nav-container ${activeMenu && 'nav'}`}>
       <Particles style={styles.root} />
       <div className="logo-container">
         <Avatar src={icon} size="large" />

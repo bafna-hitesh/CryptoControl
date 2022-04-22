@@ -3,6 +3,7 @@
 import { React, useEffect, useState } from 'react';
 import { Collapse, Row, Col, Typography, Avatar } from 'antd';
 import Skeleton from './skeleton/Skeleton';
+import Pagination from './Pagination';
 
 const { Text } = Typography;
 const { Panel } = Collapse;
@@ -33,7 +34,14 @@ async function getExchanges() {
 }
 
 export default function Exchanges() {
-      const [exchanges, setExchanges] = useState([]);
+  const [exchanges, setExchanges] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage] = useState(15);
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = exchanges.slice(indexOfFirstPost, indexOfLastPost);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   useEffect(() => {
     // eslint-disable-next-line no-shadow
@@ -44,7 +52,7 @@ export default function Exchanges() {
 
   if (!exchanges.length) return <Skeleton type="exchanges" />;
 
-  const renderExchanges = () => exchanges.map((exchange) => (
+  const renderExchanges = () => currentPosts.map((exchange) => (
     <Panel header={exchange.name} key={exchange.id}>
       <Row gutter={[16, 16]}>
         <Col span={4}>
@@ -96,6 +104,11 @@ export default function Exchanges() {
       <Collapse defaultActiveKey={['1']}>
         {renderExchanges()}
       </Collapse>
+      <Pagination
+        postsPerPage={postsPerPage}
+        totalPosts={exchanges.length}
+        paginate={paginate}
+      />
     </div>
   );
 }
